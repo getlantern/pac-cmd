@@ -7,6 +7,7 @@ ifeq ($(OS),Windows_NT)
 	os = windows
 	CCFLAGS += -D WIN32
 	LDFLAGS += -l rasapi32 -l wininet
+	BIN = pac.exe
 	ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
 		CCFLAGS += -D AMD64
 	endif
@@ -19,11 +20,13 @@ else
 		os = linux
 		CCFLAGS += -D LINUX $(shell pkg-config --cflags gio-2.0)
 		LDFLAGS += $(shell pkg-config --libs gio-2.0)
+		BIN = pac-linux
 	endif
 	ifeq ($(UNAME_S),Darwin)
 		os = darwin
 		CCFLAGS += -D DARWIN -x objective-c
 		LDFLAGS += -framework Cocoa -framework SystemConfiguration -framework Security
+		BIN = pac
 	endif
 	UNAME_P := $(shell uname -p)
 	ifeq ($(UNAME_P),x86_64)
@@ -39,12 +42,12 @@ endif
 
 CC=gcc
 
-all: pac_$(os)
+all: $(BIN)
 main.o: main.c common.h
 	$(CC) $(CCFLAGS) $^
 $(os).o: $(os).c common.h
 	$(CC) $(CCFLAGS) $^
-pac_$(os): $(os).o main.o
+$(BIN): $(os).o main.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 clean:
