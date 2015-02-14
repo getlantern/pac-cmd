@@ -46,3 +46,6 @@ $(os).o: $(os).c common.h
 	$(CC) $(CCFLAGS) $^
 pac_$(os): $(os).o main.o
 	$(CC) -o $@ $^ $(LDFLAGS)
+
+clean:
+	rm *.o pac_$(os)

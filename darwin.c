@@ -99,11 +99,8 @@ int togglePac(bool turnOn, const char* pacUrl)
       [newPreferences setValue: wantedHost forKey:(NSString*)kSCPropNetProxiesHTTPProxy];
       [newPreferences setValue:[NSNumber numberWithInt:1] forKey:(NSString*)kSCPropNetProxiesProxyAutoConfigEnable];
       [newPreferences setValue:nsPacUrl forKey:(NSString*)kSCPropNetProxiesProxyAutoConfigURLString];
-      NSLog(@"Setting pac ON for device %@ with: %@",
-          SCNetworkServiceGetName(networkServiceRef), newPreferences);
     } else {
       [newPreferences setValue:[NSNumber numberWithInt:0] forKey:(NSString*)kSCPropNetProxiesProxyAutoConfigEnable];
-      NSLog(@"Setting pac OFF for device %@", SCNetworkServiceGetName(networkServiceRef));
     }
 
     success = SCNetworkProtocolSetConfiguration(proxyProtocolRef, (__bridge CFDictionaryRef)newPreferences);
