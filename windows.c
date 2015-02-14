@@ -3,12 +3,13 @@
 #include <Wininet.h>
 #include <ras.h>
 #include <tchar.h>
-#include "pacon.h"
+#include <stdio.h>
+#include "common.h"
 
 void reportWindowsError(const char* action) {
   LPTSTR pErrMsg = NULL;
   DWORD errCode = GetLastError();
-  DWORD result = FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|
+  FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER|
       FORMAT_MESSAGE_FROM_SYSTEM|
       FORMAT_MESSAGE_ARGUMENT_ARRAY,
       NULL,
@@ -17,7 +18,7 @@ void reportWindowsError(const char* action) {
       pErrMsg,
       0,
       NULL);
-  printf("Error %s: %d %s\n", action, errCode, pErrMsg);
+  printf("Error %s: %lu %s\n", action, errCode, pErrMsg);
 }
 
 // Figure out which Dial-Up or VPN connection is active; in a normal LAN connection, this should
@@ -85,7 +86,7 @@ int togglePac(bool turnOn, const char* pacUrl)
   options.pszConnection = FindActiveConnection();
 
   options.dwOptionCount = 2;
-  options.pOptions = calloc(2, sizeof(INTERNET_PER_CONN_OPTION));
+  options.pOptions = (INTERNET_PER_CONN_OPTION*)calloc(2, sizeof(INTERNET_PER_CONN_OPTION));
   if(!options.pOptions) {
     return NO_MEMORY;
   }
@@ -105,20 +106,20 @@ int togglePac(bool turnOn, const char* pacUrl)
   result = InternetSetOption(NULL,INTERNET_OPTION_PER_CONNECTION_OPTION, &options, dwBufferSize);
   if (!result) {
     reportWindowsError("setting options");
-    ret = SYSCALL_FAILED
-      goto cleanup
+    ret = SYSCALL_FAILED;
+    goto cleanup;
   }
   result = InternetSetOption(NULL, INTERNET_OPTION_SETTINGS_CHANGED, NULL, 0);
   if (!result) {
     reportWindowsError("propagating changes");
-    ret = SYSCALL_FAILED
-      goto cleanup
+    ret = SYSCALL_FAILED;
+    goto cleanup;
   }
   result = InternetSetOption(NULL, INTERNET_OPTION_REFRESH , NULL, 0);
   if (!result) {
     reportWindowsError("refreshing");
-    ret = SYSCALL_FAILED
-      goto cleanup
+    ret = SYSCALL_FAILED;
+    goto cleanup;
   }
 
 cleanup:

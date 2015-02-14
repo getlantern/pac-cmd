@@ -30,4 +30,6 @@ int main(int argc, char* argv[]) {
   } else {
     usage();
   }
+  // code never reaches here, just stops compiler from complain
+  return RET_NO_ERROR;
 }
