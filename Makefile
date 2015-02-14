@@ -48,4 +48,4 @@ pac_$(os): $(os).o main.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 clean:
-	rm *.o pac_$(os)
+	rm *.o
