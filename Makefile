@@ -37,7 +37,6 @@ else
 endif
 
 CC=gcc
-LD=ld
 
 all: pac_$(os)
 main.o: main.c common.h
@@ -45,4 +44,4 @@ main.o: main.c common.h
 $(os).o: $(os).c common.h
 	$(CC) $(CCFLAGS) $^
 pac_$(os): $(os).o main.o
-	$(LD) $(LDFLAGS) -o $@ $^
+	$(CC) $(LDFLAGS) -o $@ $^
