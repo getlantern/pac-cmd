@@ -9,3 +9,5 @@ pac [on  <pac url> | off]
 ```
 
 *  **Mac**: Have to `sudo` as setting pac is an privileged action.
+
+*  **Windows**: Install [MinGW-W64](http://sourceforge.net/projects/mingw-w64) to build pac, as it has up to date SDK headers we require.
