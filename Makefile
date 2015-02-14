@@ -17,7 +17,8 @@ else
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
 		os = linux
-		CCFLAGS += -D LINUX
+		CCFLAGS += -D LINUX $(shell pkg-config --cflags gio-2.0)
+		LDFLAGS += $(shell pkg-config --libs gio-2.0)
 	endif
 	ifeq ($(UNAME_S),Darwin)
 		os = darwin
@@ -44,4 +45,4 @@ main.o: main.c common.h
 $(os).o: $(os).c common.h
 	$(CC) $(CCFLAGS) $^
 pac_$(os): $(os).o main.o
-	$(CC) $(LDFLAGS) -o $@ $^
+	$(CC) -o $@ $^ $(LDFLAGS)

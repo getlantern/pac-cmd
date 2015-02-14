@@ -1,4 +1,5 @@
-#include <gtk/gtk.h>
+#include <gio/gio.h>
+#include <stdio.h>
 #include "common.h"
 
 int togglePac(bool turnOn, const char* pacUrl)
