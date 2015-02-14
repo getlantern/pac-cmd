@@ -35,13 +35,13 @@ int setUid()
     NSLog(@"Error chmod");
     return NO_PERMISSION;
   }
-  return NO_ERROR;
+  return RET_NO_ERROR;
 }
 
 int togglePac(bool turnOn, const char* pacUrl)
 {
   NSString* nsPacUrl = [[NSString alloc] initWithCString: pacUrl encoding:NSUTF8StringEncoding];
-  int ret = NO_ERROR;
+  int ret = RET_NO_ERROR;
   Boolean success;
 
   SCNetworkSetRef networkSetRef;

@@ -3,7 +3,7 @@
 
 int togglePac(bool turnOn, const char* pacUrl)
 {
-  int ret = NO_ERROR;
+  int ret = RET_NO_ERROR;
 
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   // deprecated since version 2.36, must leave here or prior glib will crash

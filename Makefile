@@ -1,6 +1,8 @@
 # This Makefile is GNU make compatible. You can get GNU Make from
 # http://gnuwin32.sourceforge.net/packages/make.htm
 
+CCFLAGS = -Wall
+
 ifeq ($(OS),Windows_NT)
 	os = windows
 	CCFLAGS += -D WIN32

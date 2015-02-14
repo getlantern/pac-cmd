@@ -77,7 +77,7 @@ LPTSTR FindActiveConnection() {
 
 int togglePac(bool turnOn, const char* pacUrl)
 {
-  int ret = NO_ERROR;
+  int ret = RET_NO_ERROR;
 
   INTERNET_PER_CONN_OPTION_LIST options;
   DWORD   dwBufferSize = sizeof(options);

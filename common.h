@@ -8,7 +8,7 @@ int setUid();
 int togglePac(bool turnOn, const char* pacUrl);
 
 enum RET_ERRORS {
-  NO_ERROR = 0,
+  RET_NO_ERROR = 0,
   INVALID_FORMAT = 1,
   NO_PERMISSION = 2,
   SYSCALL_FAILED = 3,
