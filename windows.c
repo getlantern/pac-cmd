@@ -21,6 +21,7 @@ void reportWindowsError(const char* action) {
   printf("Error %s: %lu %s\n", action, errCode, pErrMsg);
 }
 
+// Stolen from https://github.com/getlantern/winproxy
 // Figure out which Dial-Up or VPN connection is active; in a normal LAN connection, this should
 // return NULL. NOTE: For some reason this method fails when compiled in Debug mode but works
 // every time in Release mode.
