@@ -18,7 +18,7 @@ void reportWindowsError(const char* action) {
       pErrMsg,
       0,
       NULL);
-  printf("Error %s: %lu %s\n", action, errCode, pErrMsg);
+  fprintf(stderr, "Error %s: %lu %s\n", action, errCode, pErrMsg);
 }
 
 // Stolen from https://github.com/getlantern/winproxy

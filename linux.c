@@ -14,13 +14,13 @@ int togglePac(bool turnOn, const char* pacUrl)
   if (turnOn == true) {
     gboolean success = g_settings_set_string(setting, "mode", "auto");
     if (!success) {
-      printf("error setting mode to auto\n");
+      fprintf(stderr, "error setting mode to auto\n");
       ret = SYSCALL_FAILED;
       goto cleanup;
     }
     success = g_settings_set_string(setting, "autoconfig-url", pacUrl);
     if (!success) {
-      printf("error setting autoconfig-url to %s\n", pacUrl);
+      fprintf(stderr, "error setting autoconfig-url to %s\n", pacUrl);
       ret = SYSCALL_FAILED;
       goto cleanup;
     }
@@ -28,7 +28,7 @@ int togglePac(bool turnOn, const char* pacUrl)
   else {
     gboolean success = g_settings_set_string(setting, "mode", "none");
     if (!success) {
-      printf("error setting mode to none\n");
+      fprintf(stderr, "error setting mode to none\n");
       ret = SYSCALL_FAILED;
       goto cleanup;
     }
