@@ -27,3 +27,7 @@ pac setuid
 *  **Windows**
 
 Install [MinGW-W64](http://sourceforge.net/projects/mingw-w64) to build pac, as it has up to date SDK headers we require.
+
+*  **Linux**
+
+`sudo apt-get install libgtk2.0-dev`
