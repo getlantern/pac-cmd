@@ -3,18 +3,30 @@
 #include <string.h>
 #include "common.h"
 
-void usage()
+void usage(const char* binName)
 {
-  puts("Usage: pac [on  <pac url> | off]");
+  printf("Usage: %s [on  <pac url> | off]", binName);
   exit(INVALID_FORMAT);
 }
 
 int main(int argc, char* argv[]) {
   if (argc < 2) {
-    usage();
+    usage(argv[0]);
   }
 
 #ifdef DARWIN
+  if (strcmp(argv[1], "elevate") == 0) {
+    char *path = argv[0];
+    char *prompt = NULL;
+    char *iconPath = NULL;
+    if (argc > 2) {
+      prompt = argv[2];
+    }
+    if (argc > 3) {
+      iconPath = argv[3];
+    }
+    return elevate(path, prompt, iconPath);
+  }
   if (strcmp(argv[1], "setuid") == 0) {
     return setUid();
   }
@@ -22,13 +34,13 @@ int main(int argc, char* argv[]) {
 
   if (strcmp(argv[1], "on") == 0) {
     if (argc < 3) {
-      usage();
+      usage(argv[0]);
     }
     return togglePac(true, argv[2]);
   } else if (strcmp(argv[1], "off") == 0) {
     return togglePac(false, "");
   } else {
-    usage();
+    usage(argv[0]);
   }
   // code never reaches here, just stops compiler from complain
   return RET_NO_ERROR;

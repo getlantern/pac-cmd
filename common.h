@@ -3,6 +3,7 @@
 
 #ifdef DARWIN
 int setUid();
+int elevate(char *path, char *prompt, char *iconPath);
 #endif
 
 int togglePac(bool turnOn, const char* pacUrl);
