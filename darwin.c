@@ -7,82 +7,8 @@
 #include <mach-o/dyld.h>
 #include "common.h"
 
-int elevate(char *path, char *prompt, char *iconPath)
-{
-  AuthorizationEnvironment authEnv;
-  AuthorizationItem kAuthEnv[2];
-  authEnv.items = kAuthEnv;
-  authEnv.count = 0;
-
-  if (prompt != NULL) {
-    kAuthEnv[authEnv.count].name = kAuthorizationEnvironmentPrompt;
-    kAuthEnv[authEnv.count].valueLength = strlen(prompt);
-    kAuthEnv[authEnv.count].value = prompt;
-    kAuthEnv[authEnv.count].flags = 0;
-    authEnv.count++;
-  }
-  if (iconPath != NULL) {
-    kAuthEnv[authEnv.count].name = kAuthorizationEnvironmentIcon;
-    kAuthEnv[authEnv.count].valueLength = strlen(iconPath);
-    kAuthEnv[authEnv.count].value = iconPath;
-    kAuthEnv[authEnv.count].flags = 0;
-    authEnv.count++;
-  }
-
-  AuthorizationItem authItems[1];
-  authItems[0].name = kAuthorizationRightExecute;
-  authItems[0].valueLength = 0;
-  authItems[0].value = NULL;
-  authItems[0].flags = 0;
-
-  AuthorizationRights authRights;
-  authRights.count = sizeof(authItems) / sizeof(authItems[0]);
-  authRights.items = authItems;
-
-  AuthorizationFlags authFlags;
-  authFlags = kAuthorizationFlagDefaults | kAuthorizationFlagInteractionAllowed | kAuthorizationFlagExtendRights;
-
-  AuthorizationRef authRef;
-  OSStatus status = AuthorizationCreate(&authRights, &authEnv, authFlags, &authRef);
-  if(status != errAuthorizationSuccess) {
-    NSLog(@"Error create authorization");
-    return NO_PERMISSION;
-  }
-
-  FILE *pipe = NULL;
-  char* argv[] = { "setuid", NULL };
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-  status = AuthorizationExecuteWithPrivileges(authRef, path, kAuthorizationFlagDefaults, argv, &pipe);
-#pragma GCC diagnostic warning "-Wdeprecated-declarations"
-  if(status != errAuthorizationSuccess) {
-    NSLog(@"Error run %s with privileges: %d", path, status);
-  } else {
-    char readBuffer[256];
-    for(;;) {
-      ssize_t len = read(fileno(pipe), readBuffer, sizeof(readBuffer));
-      if (len <= 0) { break; }
-      write(STDERR_FILENO, readBuffer, len);
-    }
-    fclose(pipe);
-  }
-
-  AuthorizationFree(authRef, kAuthorizationFlagDestroyRights);
-  return status == errAuthorizationSuccess ? 0 : -1;
-}
-
 int setUid()
 {
-  AuthorizationRef authRef;
-  OSStatus result;
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-  result = AuthorizationCopyPrivilegedReference(&authRef, kAuthorizationFlagDefaults);
-#pragma GCC diagnostic warning "-Wdeprecated-declarations"
-  if (result != errAuthorizationSuccess) {
-    // AuthorizationExecuteWithPrivileges in elevate() can only read stdout,
-    //so we print all errors to stdout, same below.
-    puts("Not running as root");
-    return NO_PERMISSION;
-  }
   char exeFullPath [PATH_MAX];
   uint32_t size = PATH_MAX;
   if (_NSGetExecutablePath(exeFullPath, &size) != 0)
@@ -116,7 +42,6 @@ int togglePac(bool turnOn, const char* pacUrl)
   NSDictionary *oldPreferences;
   NSMutableDictionary *newPreferences;
   NSString *wantedHost;
-
 
   // Get System Preferences Lock
   SCPreferencesRef prefsRef = SCPreferencesCreate(NULL, CFSTR("org.getlantern.lantern"), NULL);

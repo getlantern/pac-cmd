@@ -5,38 +5,34 @@ CCFLAGS = -Wall -c
 
 ifeq ($(OS),Windows_NT)
 	os = windows
-	CCFLAGS += -D WIN32
+	CCFLAGS += -D WIN32 -D IA32
 	LDFLAGS += -l rasapi32 -l wininet
-	BIN = pac.exe
-	ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
-		CCFLAGS += -D AMD64
-	endif
-	ifeq ($(PROCESSOR_ARCHITECTURE),x86)
-		CCFLAGS += -D IA32
-	endif
+	BIN = binaries/windows/pac
 else
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
 		os = linux
 		CCFLAGS += -D LINUX $(shell pkg-config --cflags gio-2.0)
 		LDFLAGS += $(shell pkg-config --libs gio-2.0)
-		BIN = pac-linux
+		UNAME_P := $(shell uname -p)
+		ifeq ($(UNAME_P),x86_64)
+			CCFLAGS += -D AMD64
+			BIN = binaries/linux_amd64/pac
+		endif
+		ifneq ($(filter %86,$(UNAME_P)),)
+			CCFLAGS += -D IA32
+			BIN = binaries/linux_386/pac
+		endif
+		ifneq ($(filter arm%,$(UNAME_P)),)
+			CCFLAGS += -D ARM
+			BIN = binaries/linux_arm/pac
+		endif
 	endif
 	ifeq ($(UNAME_S),Darwin)
 		os = darwin
-		CCFLAGS += -D DARWIN -x objective-c
+		CCFLAGS += -D DARWIN -D AMD64 -x objective-c
 		LDFLAGS += -framework Cocoa -framework SystemConfiguration -framework Security
-		BIN = pac
-	endif
-	UNAME_P := $(shell uname -p)
-	ifeq ($(UNAME_P),x86_64)
-		CCFLAGS += -D AMD64
-	endif
-	ifneq ($(filter %86,$(UNAME_P)),)
-		CCFLAGS += -D IA32
-	endif
-	ifneq ($(filter arm%,$(UNAME_P)),)
-		CCFLAGS += -D ARM
+		BIN = binaries/darwin/pac
 	endif
 endif
 

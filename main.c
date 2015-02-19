@@ -15,18 +15,6 @@ int main(int argc, char* argv[]) {
   }
 
 #ifdef DARWIN
-  if (strcmp(argv[1], "elevate") == 0) {
-    char *path = argv[0];
-    char *prompt = NULL;
-    char *iconPath = NULL;
-    if (argc > 2) {
-      prompt = argv[2];
-    }
-    if (argc > 3) {
-      iconPath = argv[3];
-    }
-    return elevate(path, prompt, iconPath);
-  }
   if (strcmp(argv[1], "setuid") == 0) {
     return setUid();
   }
