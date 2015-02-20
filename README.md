@@ -4,6 +4,8 @@ A command line tool to change proxy auto-config settings of operation system.
 
 Binaries included in repo. Simply `make` to build it again.
 
+Note - you will need to run make separately on each platform.
+
 # Usage
 
 ```sh
@@ -16,12 +18,16 @@ pac [on  <pac url> | off]
   
 Setting pac is an privileged action on Mac OS. `sudo` or elevate it as below.
 
-There's an additional option to chown itself to root:wheel and add setuid bit. User will be prompted to input password to grant privilege to do so. Mainly used for scripting.
+There's an additional option to chown itself to root:wheel and add setuid bit.
 
 ```sh
-pac elevate [prompt] [icon path]
+pac setuid
 ```
 
 *  **Windows**
 
 Install [MinGW-W64](http://sourceforge.net/projects/mingw-w64) to build pac, as it has up to date SDK headers we require.
+
+*  **Linux**
+
+`sudo apt-get install libgtk2.0-dev`
