@@ -92,7 +92,9 @@ int togglePac(bool turnOn, const char* pacUrl)
       [newPreferences setValue:nsPacUrl forKey:(NSString*)kSCPropNetProxiesProxyAutoConfigURLString];
     } else {
       nsOldPacUrl = [newPreferences valueForKey:(NSString*)kSCPropNetProxiesProxyAutoConfigURLString];
-      if (nsPacUrl.length == 0 || [nsPacUrl isEqualToString:nsOldPacUrl]) {
+      // we turn pac off only if the option is set and pac url has the provided
+      // prefix.
+      if (nsPacUrl.length == 0 || [nsOldPacUrl hasPrefix:nsPacUrl]) {
         [newPreferences setValue:[NSNumber numberWithInt:0] forKey:(NSString*)kSCPropNetProxiesProxyAutoConfigEnable];
         [newPreferences setValue:@"" forKey:(NSString*)kSCPropNetProxiesProxyAutoConfigURLString];
       }
