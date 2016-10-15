@@ -3,14 +3,29 @@
 #include <string.h>
 #include "common.h"
 
-int togglePac(bool turnOn, const char* pacUrl)
-{
-  int ret = RET_NO_ERROR;
-
+int init() {
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   // deprecated since version 2.36, must leave here or prior glib will crash
   g_type_init();
 #pragma GCC diagnostic warning "-Wdeprecated-declarations"
+}
+
+int show()
+{
+  init();
+  GSettings* setting = g_settings_new("org.gnome.system.proxy");
+  char* old_mode = g_settings_get_string(setting, "mode");
+  char* old_pac_url = g_settings_get_string(setting, "autoconfig-url");
+  if (strcmp(old_mode, "auto") == 0) {
+    printf("%s\n", old_pac_url);
+  }
+  return RET_NO_ERROR;
+}
+
+int togglePac(bool turnOn, const char* pacUrl)
+{
+  int ret = RET_NO_ERROR;
+  init();
   GSettings* setting = g_settings_new("org.gnome.system.proxy");
   if (turnOn == true) {
     gboolean success = g_settings_set_string(setting, "mode", "auto");
