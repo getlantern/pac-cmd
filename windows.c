@@ -153,8 +153,11 @@ turnOff:
     options.pOptions[1].Value.pszValue = "";
   }
 
-  BOOL result;
-  result = InternetSetOption(NULL,INTERNET_OPTION_PER_CONNECTION_OPTION, &options, dwBufferSize);
+  DWORD dwBufferSize = sizeof(INTERNET_PER_CONN_OPTION_LIST);
+  BOOL result = InternetSetOption(NULL,
+      INTERNET_OPTION_PER_CONNECTION_OPTION,
+      &options,
+      dwBufferSize);
   if (!result) {
     reportWindowsError("setting options");
     ret = SYSCALL_FAILED;
