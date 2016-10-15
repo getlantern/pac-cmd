@@ -3,7 +3,7 @@
 #include <string.h>
 #include "common.h"
 
-int init() {
+void init() {
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
   // deprecated since version 2.36, must leave here or prior glib will crash
   g_type_init();
