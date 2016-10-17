@@ -99,7 +99,7 @@ int visit(visitor v, bool persist, bool turnOn, const char* pacUrl)
     }
 
     oldPreferences = (__bridge NSDictionary*)SCNetworkProtocolGetConfiguration(proxyProtocolRef);
-    if (v(proxyProtocolRef, oldPreferences, turnOn, pacUrl)) {
+    if (!v(proxyProtocolRef, oldPreferences, turnOn, pacUrl)) {
       ret = SYSCALL_FAILED;
     }
 
