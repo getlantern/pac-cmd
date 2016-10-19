@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
 #endif
 
   if (strcmp(argv[1], "show") == 0) {
-    show();
+    return show();
   } else if (strcmp(argv[1], "on") == 0) {
     if (argc < 3) {
       usage(argv[0]);

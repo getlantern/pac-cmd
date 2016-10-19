@@ -32,6 +32,11 @@ pac setuid
 
 Install [MinGW-W64](http://sourceforge.net/projects/mingw-w64) to build pac, as it has up to date SDK headers we require.
 
+To avoid bringing up console window, it doesn't show anything directly to console. Piping the result to other utilities should work.
+```
+pac show | cat
+```
+
 *  **Linux**
 
 `sudo apt-get install libgtk2.0-dev`
