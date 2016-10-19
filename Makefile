@@ -9,15 +9,15 @@ ifeq ($(OS),Windows_NT)
     # 32 bit `make` utility over 64 bit OS
     ifeq ($(PROCESSOR_ARCHITEW6432),AMD64)
         CCFLAGS += -D AMD64
-        BIN = binaries/windows_amd64/pac
+        BIN = binaries/windows/pac_amd64
     else
         ifeq ($(PROCESSOR_ARCHITECTURE),AMD64)
             CCFLAGS += -D AMD64
-            BIN = binaries/windows_amd64/pac
+            BIN = binaries/windows/pac_amd64
         endif
         ifeq ($(PROCESSOR_ARCHITECTURE),x86)
             CCFLAGS += -D IA32
-      BIN = binaries/windows_386/pac
+            BIN = binaries/windows/pac_386
         endif
     endif
     LDFLAGS += -l rasapi32 -l wininet -Wl,--subsystem,windows
