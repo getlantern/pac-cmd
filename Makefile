@@ -2,9 +2,10 @@
 # http://gnuwin32.sourceforge.net/packages/make.htm
 
 CCFLAGS = -Wall -c
-
+RM = rm
 ifeq ($(OS),Windows_NT)
 	os = windows
+	RM = del /Q
 	CCFLAGS += -D WIN32
 	# 32 bit `make` utility over 64 bit OS
 	ifeq ($(PROCESSOR_ARCHITEW6432),AMD64)
@@ -60,4 +61,4 @@ $(BIN): $(os).o main.o
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 clean:
-	rm *.o
+	$(RM) *.o
